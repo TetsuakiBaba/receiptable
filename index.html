@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Receitable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <link href="./index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar bg-light">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1"><i class="bi bi-file-earmark-spreadsheet"></i>
+                    Receitable
+                </span>
+                <span class="small" id="version"></span>
+            </div>
+        </nav>
+        <div class="row pt-4">
+            <div class="col-md-12 p-3">
+                <div class="card">
+                    <div id="pdf_element" class="ps-4 pe-4">
+                        <div class="card-body">
+                            <h1 class="mt-5 mb-5 bg-secondary text-white" id="title">RECEIPT</h1>
+                            <p>Date: <span id="date"></span></p>
+
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-3 col-form-label">Received From: </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="input_received_from"
+                                        oninput="updateReceivedFrom(this);">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-3 col-form-label">Payment Amount: </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="input_payment_amount"
+                                        oninput="updatePaymentAmount(this);">
+                                </div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-3 col-form-label">Payment For: </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="input_payment_for"
+                                        oninput="updatePaymentFor(this);">
+                                </div>
+                            </div>
+
+                            <div class="mb-5 row">
+                                <label for="inputPassword" class="col-sm-3 col-form-label">Received By: </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="input_received_by"
+                                        oninput="updateReceivedBy(this);">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <p>
+                                    I, <span id="received_by"></span>, received from <span id="received_from"></span>
+                                    the
+                                    amount of <span id="payment_amount"></span> for payment of <span
+                                        id="payment_for"></span>
+                                </p>
+                            </div>
+                            <div class=" mb-0 d-flex justify-content-center">
+
+                                <div id="signature">
+                                    <canvas class="border text-center">
+                                    </canvas>
+                                </div>
+                            </div>
+
+                            <div class="mb-3  d-flex justify-content-center">
+                                Signature
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                <button class="btn btn-warning p-2" onclick="signaturePad.clear();">Clear Signature</button>
+                <button class="btn btn-danger p-2" onclick="downloadPDF();">Download PDF</button>
+            </div>
+            <hr>
+            <div class="mb-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                <input type="text" class="form-control" id="share_link">
+                <button class="btn btn-secondary p-2" onclick="showShareLink();">Create Share Link</button>
+            </div>
+        </div>
+
+
+        <hr>
+        <footer class="text-center">
+            <p class="small">
+                The data read will not be sent outside the system. Please refer to the source code for details. The
+                author assumes no responsibility for any damage or loss caused by this system.
+            </p>
+            2022 &copy; Tetsuaki Baba <a href="https://github.com/TetsuakiBaba/receitable" target="_blank"><i
+                    class="bi bi-github"></i></a>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+
+</html>
