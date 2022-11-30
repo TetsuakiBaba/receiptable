@@ -1,4 +1,4 @@
-var version = `Last modified: 2022/11/30 12:31:56
+var version = `Last modified: 2022/11/30 12:58:32
 `;
 
 
@@ -9,6 +9,10 @@ function updateReceivedFrom(dom) {
 function updateReceivedBy(dom) {
     document.querySelector('#received_by').innerText = dom.value;
 }
+function updateReceivedAddress(dom) {
+    document.querySelector('#received_address').innerText = dom.value;
+}
+
 
 function updatePaymentAmount(dom) {
     document.querySelector('#payment_amount').innerText = dom.value;
@@ -17,9 +21,13 @@ function updatePaymentFor(dom) {
     document.querySelector('#payment_for').innerText = dom.value;
 }
 
+function updatePaymentFor(dom) {
+    document.querySelector('#payment_address').innerText = dom.value;
+}
+
 function showShareLink() {
     let link = new URL(window.location.origin);
-    link += `?received_from=${document.querySelector('#input_received_from').value}&received_by=${document.querySelector('#input_received_by').value}&payment_amount=${document.querySelector('#input_payment_amount').value}&payment_for=${document.querySelector('#input_payment_for').value}`;
+    link += `?received_from=${document.querySelector('#input_received_from').value}&received_by=${document.querySelector('#input_received_by').value}&payment_amount=${document.querySelector('#input_payment_amount').value}&payment_for=${document.querySelector('#input_payment_for').value}&payment_address=${document.querySelector('#input_payment_address').value}`;
 
     document.querySelector('#share_link').value = encodeURI(link);
     document.querySelector('#share_link').select();
@@ -71,11 +79,13 @@ window.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#input_received_by').value = params.get('received_by');
     document.querySelector('#input_payment_amount').value = params.get('payment_amount');
     document.querySelector('#input_payment_for').value = params.get('payment_for');
+    document.querySelector('#input_payment_address').value = params.get('payment_address');
     function updateStatement() {
         document.querySelector('#received_from').innerText = document.querySelector('#input_received_from').value;
         document.querySelector('#received_by').innerText = document.querySelector('#input_received_by').value;
         document.querySelector('#payment_amount').innerText = document.querySelector('#input_payment_amount').value;
         document.querySelector('#payment_for').innerText = document.querySelector('#input_payment_for').value;
+        document.querySelector('#payment_address').innerText = document.querySelector('#input_payment_address').value;
     }
     updateStatement();
 })
