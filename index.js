@@ -1,4 +1,4 @@
-var version = `Last modified: 2022/11/30 12:58:32
+var version = `Last modified: 2022/11/30 13:10:18
 `;
 
 
@@ -27,7 +27,7 @@ function updatePaymentFor(dom) {
 
 function showShareLink() {
     let link = new URL(window.location.origin);
-    link += `?received_from=${document.querySelector('#input_received_from').value}&received_by=${document.querySelector('#input_received_by').value}&payment_amount=${document.querySelector('#input_payment_amount').value}&payment_for=${document.querySelector('#input_payment_for').value}&payment_address=${document.querySelector('#input_payment_address').value}`;
+    link += `${window.location.pathname}?received_from=${document.querySelector('#input_received_from').value}&received_by=${document.querySelector('#input_received_by').value}&payment_amount=${document.querySelector('#input_payment_amount').value}&payment_for=${document.querySelector('#input_payment_for').value}&payment_address=${document.querySelector('#input_payment_address').value}`;
 
     document.querySelector('#share_link').value = encodeURI(link);
     document.querySelector('#share_link').select();
