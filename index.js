@@ -1,4 +1,4 @@
-var version = `Last modified: 2022/11/30 13:10:18
+var version = `Last modified: 2022/12/03 17:03:55
 `;
 
 
@@ -108,7 +108,7 @@ function downloadPDF() {
     const element = document.querySelector('#pdf_element'); // 対象要素を指定
     const option = {
         margin: 10, // 余白
-        filename: 'test',//`${document.querySelector('#classcode').innerText} ${document.querySelector('#profname').innerText}.pdf`, // ファイル名
+        filename: `${document.querySelector('#input_received_by').value}_${document.querySelector('#input_payment_for').value}.pdf`, // ファイル名
         //image: { type: 'png', quality: 1 }, // PDFの生成に使用される画像のタイプとクオリティ
         html2canvas: {
             scale: window.devicePixelRatio * 2,
