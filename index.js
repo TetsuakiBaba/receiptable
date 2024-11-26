@@ -1,4 +1,4 @@
-var version = `Last modified: 2022/12/03 17:05:52
+var version = `Last modified: 2024/11/26 10:30:12
 `;
 
 
@@ -9,6 +9,7 @@ function updateReceivedFrom(dom) {
 function updateReceivedBy(dom) {
     document.querySelector('#received_by').innerText = dom.value;
 }
+
 function updateReceivedAddress(dom) {
     document.querySelector('#received_address').innerText = dom.value;
 }
@@ -17,25 +18,33 @@ function updateReceivedAddress(dom) {
 function updatePaymentAmount(dom) {
     document.querySelector('#payment_amount').innerText = dom.value;
 }
+
 function updatePaymentFor(dom) {
     document.querySelector('#payment_for').innerText = dom.value;
 }
 
-function updatePaymentFor(dom) {
+function updatePaymentAddress(dom) {
     document.querySelector('#payment_address').innerText = dom.value;
 }
 
 function showShareLink() {
-    let link = new URL(window.location.origin);
-    link += `${window.location.pathname}?received_from=${document.querySelector('#input_received_from').value}&received_by=${document.querySelector('#input_received_by').value}&payment_amount=${document.querySelector('#input_payment_amount').value}&payment_for=${document.querySelector('#input_payment_for').value}&payment_address=${document.querySelector('#input_payment_address').value}`;
+    const params = new URLSearchParams({
+        received_from: document.querySelector('#input_received_from').value,
+        received_by: document.querySelector('#input_received_by').value,
+        payment_amount: document.querySelector('#input_payment_amount').value,
+        payment_for: document.querySelector('#input_payment_for').value,
+        payment_address: document.querySelector('#input_payment_address').value
+    });
 
-    document.querySelector('#share_link').value = encodeURI(link);
+    let link = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+
+    document.querySelector('#share_link').value = link;
     document.querySelector('#share_link').select();
     document.execCommand('copy');
 }
 
 
-var canvas
+var canvas;
 var signaturePad;
 window.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#version').innerText = version;
@@ -75,11 +84,14 @@ window.addEventListener('DOMContentLoaded', function () {
     console.log(params.get('received_by'));
     console.log(params.get('payment_amount'));
     console.log(params.get('payment_for'));
-    document.querySelector('#input_received_from').value = params.get('received_from');
-    document.querySelector('#input_received_by').value = params.get('received_by');
-    document.querySelector('#input_payment_amount').value = params.get('payment_amount');
-    document.querySelector('#input_payment_for').value = params.get('payment_for');
-    document.querySelector('#input_payment_address').value = params.get('payment_address');
+    console.log(params.get('payment_address'));
+
+    document.querySelector('#input_received_from').value = params.get('received_from') || '';
+    document.querySelector('#input_received_by').value = params.get('received_by') || '';
+    document.querySelector('#input_payment_amount').value = params.get('payment_amount') || '';
+    document.querySelector('#input_payment_for').value = params.get('payment_for') || '';
+    document.querySelector('#input_payment_address').value = params.get('payment_address') || '';
+
     function updateStatement() {
         document.querySelector('#received_from').innerText = document.querySelector('#input_received_from').value;
         document.querySelector('#received_by').innerText = document.querySelector('#input_received_by').value;
@@ -88,8 +100,7 @@ window.addEventListener('DOMContentLoaded', function () {
         document.querySelector('#payment_address').innerText = document.querySelector('#input_payment_address').value;
     }
     updateStatement();
-})
-
+});
 
 
 
@@ -98,7 +109,7 @@ function buildElement(name_tag, innerHTML, str_class, str_style, element_appende
     if (innerHTML) element.innerHTML = innerHTML;
     if (str_class) element.classList = str_class;
     if (str_style) element.setAttribute('style', str_style);
-    if (element) element_appended.appendChild(element);
+    if (element_appended) element_appended.appendChild(element);
     return element;
 }
 
